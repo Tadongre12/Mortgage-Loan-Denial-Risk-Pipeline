@@ -8,6 +8,14 @@ load_dotenv()
 
 fred = Fred(api_key=os.getenv("FRED_API_KEY"))
 
+#pull weekly mortgage rate from FRED and save to raw data folder
+mortgage_rate = fred.get_series("MORTGAGE30US", observation_start = "2024-01-01", observation_end = "2024-12-31")
+mortgage_df = pd.DataFrame(mortgage_rate)
+mortgage_df = mortgage_df.reset_index()
+mortgage_df.columns = ["date", "mortgage_rate_30yr"]
+mortgage_df['year'] = 2024
+mortgage_df.to_csv("data/raw/fred_mortgage_rate_2024.csv", index = False)
+
 #pull monthly NC unemployment rate from FRED and save to raw data folder
 unemp_rate = fred.get_series("NCUR", observation_start = "2024-01-01", observation_end = "2024-12-31")
 unemp_df = pd.DataFrame(unemp_rate)
