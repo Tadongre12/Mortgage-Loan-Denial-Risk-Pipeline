@@ -49,6 +49,8 @@ print(y.value_counts())
 print(X.isnull().sum()[X.isnull().sum() > 0])
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
+X_test_df = pd.DataFrame(X_test, columns=X.columns)
+
 #Feature scaling
 scaler = StandardScaler()
 X_train = scaler.fit_transform(X_train)
@@ -66,10 +68,19 @@ y_prob = model.predict_proba(X_test)[:, 1]
 print(classification_report(y_test, y_pred))
 print("ROC-AUC:", roc_auc_score(y_test, y_prob))
 
+# Export feature importance
+feature_names = X.columns.tolist()
+coefficients = model.coef_[0]
+importance_df = pd.DataFrame({
+    'feature': feature_names,
+    'coefficient': coefficients
+})
+importance_df = importance_df.reindex(importance_df['coefficient'].abs().sort_values(ascending=False).index)
+importance_df.to_csv("data/processed/feature_importance.csv", index=False)
+print("Feature importance exported.")
 
-
-export_df = pd.DataFrame(X_test)
-export_df['actual'] = y_test.values
-export_df['predicted'] = y_pred
-export_df['denial_probability'] = y_prob
-export_df.to_csv("data/processed/hmda_predictions.csv", index=False)
+# Export for Tableau
+tableau_df = hmda_df.loc[y_test.index].copy()
+tableau_df['predicted'] = y_pred
+tableau_df['denial_probability'] = y_prob
+tableau_df.to_csv("data/processed/hmda_predictions.csv", index=False)
