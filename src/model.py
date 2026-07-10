@@ -26,9 +26,8 @@ hmda_df['applicant_age'] = hmda_df['applicant_age'].map(age_map)
 
 #Convert numeric columns
 numeric_cols = ['loan_amount', 'loan_to_value_ratio', 
-                'income', 'debt_to_income_ratio', 'property_value',
-                'loan_to_income_ratio',
-                'avg_unemployment_rate', 'avg_hpi', 'avg_mortgage_rate']
+                'income','avg_unemployment_rate', 'avg_hpi', 
+                'avg_mortgage_rate']
 for col in numeric_cols:
     hmda_df[col] = pd.to_numeric(hmda_df[col], errors='coerce')
 
@@ -40,7 +39,7 @@ hmda_df = hmda_df.dropna(subset=numeric_cols + ['applicant_age'])
 hmda_df = hmda_df[hmda_df['is_denied'].notna()]
 
 #Define X and y
-X = hmda_df.drop(columns=["action_taken", "dti_ltv_risk", "derived_race", "derived_sex", "denial_reason-1", "state", "income_band", "loan_amount_band", "applicant_age_band", "is_denied", "derived_ethnicity", "county_code", "interest_rate"])
+X = hmda_df.drop(columns=["action_taken", 'loan_to_income_ratio', "debt_to_income_ratio", "property_value", "dti_ltv_risk", "derived_race", "derived_sex", "denial_reason-1", "state", "income_band", "loan_amount_band", "applicant_age_band", "is_denied", "derived_ethnicity", "county_code", "interest_rate"])
 y = hmda_df["is_denied"]
 
 #Encode categoricals
