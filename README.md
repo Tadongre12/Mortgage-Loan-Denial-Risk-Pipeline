@@ -1,4 +1,4 @@
-# HMDA Mortgage Lending Risk Analysis | NC & VA 2024
+# Mortgage Denial Risk Pipeline | NC & VA 2024
 
 ## Overview
 
