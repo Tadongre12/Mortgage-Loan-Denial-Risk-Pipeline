@@ -1,4 +1,4 @@
-# Mortgage Denial Risk Pipeline | NC & VA 2024
+# Mortgage Loan Denial Risk Pipeline | NC & VA 2024
 
 ## Overview
 
